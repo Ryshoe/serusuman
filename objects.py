@@ -1,22 +1,27 @@
+import csv
+
+
 class Truck:
     def __init__(self,
-                 id,
-                 location):
-        self.id = id
+                 truck_id,
+                 location,
+                 destination):
+        self.id = truck_id
         self.location = location
+        self.destination = destination
         self.mileage = 0
 
 
 class Package:
     def __init__(self,
-                 id,
+                 package_id,
                  address,
                  deadline,
                  city,
                  zip_code,
                  weight,
-                 status):
-        self.id = id
+                 status='AT_HUB'):
+        self.id = package_id
         self.address = address
         self.deadline = deadline
         self.city = city
