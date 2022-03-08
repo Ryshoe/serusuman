@@ -1,55 +1,60 @@
-# HashTable class using chaining.
+import csv
+
+from objects import Package
+
+
 class HashTable:
-    # Constructor with optional initial capacity parameter.
-    # Assigns all buckets with an empty list.
     def __init__(self, initial_capacity=10):
-        # initialize the hash table with empty bucket list entries.
         self.table = []
         for i in range(initial_capacity):
             self.table.append([])
 
-    # Inserts/updates an item into the hash table.
     def insert(self, key, value):
-        # get the bucket list where this item will go.
         bucket = hash(key) % len(self.table)
         bucket_list = self.table[bucket]
 
-        # update key if item is already in the bucket
         for kv in bucket_list:
             if kv[0] == key:
                 kv[1] = value
                 return True
 
-        # insert the item to the end of the bucket list.
         key_value = [key, value]
         bucket_list.append(key_value)
 
-    # Searches for an item with matching key in the hash table.
-    # Returns the item if found, or None if not found.
     def search(self, key):
-        # get the bucket list where this key would be.
         bucket = hash(key) % len(self.table)
         bucket_list = self.table[bucket]
 
-        # search for the key in the bucket list and return the value
         for key_value in bucket_list:
             if key_value[0] == key:
                 return key_value[1]
-        # the key is not found
+
         return None
 
-    # Removes an item with matching key from the hash table.
     def remove(self, key):
-        # get the bucket list where this item will be removed from.
         bucket = hash(key) % len(self.table)
         bucket_list = self.table[bucket]
 
-        # remove the item from the bucket list if it is present.
         for kv in bucket_list:
             if kv[0] == key:
                 bucket_list.remove([kv[0], kv[1]])
 
-    # Returns hashed bucket number using key
     def bucket(self, key):
         bucket = hash(key) % len(self.table)
         return bucket
+
+    def load_package_data(self):
+        with open('data/packages.csv') as package_data:
+            package_data = csv.reader(package_data, delimiter=',')
+
+            for i in package_data:
+                package_id = int(i[0])
+                address = i[1]
+                city = i[2]
+                zip_code = i[4]
+                deadline = i[5]
+                weight = i[6]
+                package = Package(package_id, address, deadline, city, zip_code, weight)
+                self.insert(package_id, package)
+
+            return self
