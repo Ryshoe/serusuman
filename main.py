@@ -14,10 +14,15 @@ def main():
     #         print(f'Package ID: {packages.search(key).id} '
     #               f'Address: {packages.search(key).address}')
 
-    distances = helpers.load_distance_data()
-    print(distances)
-    for i in range(len(distances)):
-        print(distances[i])
+    # distances = helpers.load_distance_data()
+    # print(distances)
+    # for i in range(len(distances)):
+    #     print(distances[i])
+
+    addresses = helpers.load_address_data()
+    print(addresses)
+    for i in range(len(addresses)):
+        print(addresses[i])
 
 
 if __name__ == "__main__":

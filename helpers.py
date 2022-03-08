@@ -6,7 +6,7 @@ from objects import Package
 def load_package_data():
     with open('data/packages.csv') as data:
         data = csv.reader(data, delimiter=',')
-        hash_table = HashTable()
+        package_table = HashTable()
 
         for i in data:
             package_id = int(i[0])
@@ -16,9 +16,9 @@ def load_package_data():
             deadline = i[5]
             weight = i[6]
             package = Package(package_id, address, deadline, city, zip_code, weight)
-            hash_table.insert(package_id, package)
+            package_table.insert(package_id, package)
 
-        return hash_table
+        return package_table
 
 
 def load_distance_data():
@@ -31,6 +31,17 @@ def load_distance_data():
             distance_list.append(row)
 
     return distance_list
+
+
+def load_address_data():
+    with open('data/addresses.csv') as data:
+        data = csv.reader(data, delimiter=',')
+        address_list = []
+
+        for i in data:
+            address_list.append(i[1])
+
+    return address_list
 
 
 class HashTable:
