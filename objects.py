@@ -1,6 +1,3 @@
-import csv
-
-
 class Truck:
     def __init__(self,
                  truck_id,
