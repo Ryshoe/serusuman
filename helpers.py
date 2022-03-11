@@ -4,6 +4,7 @@ from objects import Package
 
 
 def load_package_data():
+    # Open CSV and read into hash table
     with open('data/packages.csv') as data:
         data = csv.reader(data, delimiter=',')
         package_table = HashTable()
@@ -22,6 +23,7 @@ def load_package_data():
 
 
 def load_distance_data():
+    # Open CSV and read into array list
     with open('data/distances.csv') as data:
         data = csv.reader(data, delimiter=',')
         distance_list = []
@@ -34,6 +36,7 @@ def load_distance_data():
 
 
 def load_address_data():
+    # Open CSV and read into array list
     with open('data/addresses.csv') as data:
         data = csv.reader(data, delimiter=',')
         address_list = []
@@ -56,7 +59,22 @@ def get_distance(address1, address2):
     # Return value from distance list
     distance = distance_list[address1_index][address2_index]
 
-    return distance
+    return float(distance)
+
+
+def min_distance(curr_address, truck_packages, package_list):
+    # Declare variable to hold the shortest distance
+    shortest_distance = -1.0
+
+    # Iterate through packages on truck and compare distances from truck's current location
+    for i in range(len(truck_packages)):
+        package_address = package_list.search(truck_packages[i]).address
+        distance = get_distance(curr_address, package_address)
+
+        if distance < shortest_distance or shortest_distance == -1.0:
+            shortest_distance = distance
+
+    return shortest_distance
 
 
 class HashTable:
