@@ -44,6 +44,21 @@ def load_address_data():
     return address_list
 
 
+def get_distance(address1, address2):
+    # Load CSV data
+    address_list = load_address_data()
+    distance_list = load_distance_data()
+
+    # Assign indices from address list
+    address1_index = address_list.index(address1)
+    address2_index = address_list.index(address2)
+
+    # Return value from distance list
+    distance = distance_list[address1_index][address2_index]
+
+    return distance
+
+
 class HashTable:
     def __init__(self, initial_capacity=10):
         self.table = []
