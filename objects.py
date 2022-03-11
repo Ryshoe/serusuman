@@ -2,11 +2,13 @@ class Truck:
     def __init__(self,
                  truck_id,
                  location,
-                 destination):
+                 destination,
+                 packages=[]):
         self.id = truck_id
         self.location = location
         self.destination = destination
         self.mileage = 0
+        self.packages = packages
 
 
 class Package:
