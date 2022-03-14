@@ -73,8 +73,14 @@ def min_distance(curr_address, truck_packages, package_list):
 
         if distance < shortest_distance or shortest_distance == -1.0:
             shortest_distance = distance
+            closest_address = package_address
 
-    return shortest_distance
+    return closest_address
+
+
+def load_truck_packages():
+    # TODO write some function to load packages onto trucks
+    return
 
 
 class HashTable:
