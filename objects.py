@@ -3,7 +3,7 @@ class Truck:
                  truck_id,
                  location,
                  destination,
-                 packages=[]):
+                 packages):
         self.id = truck_id
         self.location = location
         self.destination = destination
