@@ -1,8 +1,8 @@
 # Gio Pascua
 # Student ID: 001188967
-from datetime import datetime
+import datetime
 import helpers
-from objects import Truck
+import objects
 
 
 def main():
@@ -10,20 +10,24 @@ def main():
     distance_data = helpers.load_distance_data()
     address_data = helpers.load_address_data()
 
-    truck1 = Truck(1, '4001 South 700 East', '', [1, 4, 6, 7, 8, 25, 26, 28, 29, 30, 31, 32, 40])
-    truck2 = Truck(2, '4001 South 700 East', '', [3, 5, 13, 14, 15, 16, 18, 19, 20, 21, 34, 36, 37, 38, 39])
-    truck3 = Truck(3, '4001 South 700 East', '', [2, 9, 10, 11, 12, 17, 22, 23, 24, 27, 33, 35])
+    truck1 = objects.Truck(1, address_data[0], '', [1, 4, 6, 7, 8, 25, 26, 28, 29, 30, 31, 32, 40])
+    truck2 = objects.Truck(2, address_data[0], '', [3, 5, 13, 14, 15, 16, 18, 19, 20, 21, 34, 36, 37, 38, 39])
+    truck3 = objects.Truck(3, address_data[0], '', [2, 9, 10, 11, 12, 17, 22, 23, 24, 27, 33, 35])
 
-    # package = package_data.search(39)
-    # package.status = f'DELIVERED at {datetime.now()}'
+    truck1 = helpers.deliver_packages(truck1, package_data, datetime.timedelta(hours=9, minutes=5))
+    truck2 = helpers.deliver_packages(truck2, package_data, datetime.timedelta(hours=8))
+    truck3 = helpers.deliver_packages(truck3, package_data, datetime.timedelta(hours=9, minutes=52, seconds=40))
 
-    # print(package_data.table)
-    # for i in range(len(package_data.table)):
-    #     for j in range(len(package_data.table[i])):
-    #         key = package_data.table[i][j][0]
-    #         print(f'Package ID: {package_data.search(key).id} '
-    #               f'Address: {package_data.search(key).address} '
-    #               f'Status: {package_data.search(key).status}')
+    total_mileage = truck1.mileage + truck2.mileage + truck3.mileage
+    print(f'Total mileage: {total_mileage}')
+
+    print(package_data.table)
+    for i in range(len(package_data.table)):
+        for j in range(len(package_data.table[i])):
+            key = package_data.table[i][j][0]
+            print(f'Package ID: {package_data.search(key).id} '
+                  f'\t|\tDeadline: {package_data.search(key).deadline} '
+                  f'\nStatus: {package_data.search(key).status}')
 
     # print(distance_data)
     # for i in range(len(distance_data)):
@@ -36,18 +40,6 @@ def main():
     # print(helpers.get_distance('2010 W 500 S', "4300 S 1300 E"))
     # print(helpers.min_distance('2010 W 500 S', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]))
     # print(address_data[truck1.destination])
-
-    print(truck1.mileage)
-    truck1 = helpers.deliver_packages(truck1, package_data)
-    print(truck1.mileage)
-
-    print(truck2.mileage)
-    truck1 = helpers.deliver_packages(truck2, package_data)
-    print(truck2.mileage)
-
-    print(truck3.mileage)
-    truck1 = helpers.deliver_packages(truck3, package_data)
-    print(truck3.mileage)
 
     # for i in range(len(package_data.table)):
     #     for j in range(len(package_data.table[i])):

@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 from objects import Package
 
@@ -80,7 +81,7 @@ def min_distance(curr_address, truck_packages):
     return closest_address
 
 
-def deliver_packages(truck, package_data):
+def deliver_packages(truck, package_data, depart_time):
     # Update all packages to 'EN_ROUTE'
     for i in range(len(truck.packages)):
         key = truck.packages[i]
@@ -88,10 +89,15 @@ def deliver_packages(truck, package_data):
         package.status = 'EN_ROUTE'
 
     while truck.packages:
-        # TODO: keep track of time between each stop
-        # Get the closest address from packages, drive truck to destination, and update mileage
+        # Get the closest address from packages
         truck.destination = min_distance(truck.location, truck.packages)
+
+        # Increment truck mileage and current time based on distance
         truck.mileage += get_distance(truck.location, truck.destination)
+        time_elapsed = get_distance(truck.location, truck.destination) / truck.speed
+        depart_time += datetime.timedelta(hours=time_elapsed)
+
+        # Drive truck to destination
         truck.location = truck.destination
 
         # Deliver packages that belong to current address
@@ -99,17 +105,30 @@ def deliver_packages(truck, package_data):
             key = truck.packages[i]
             package = package_data.search(key)
 
-            # TODO: add timestamp to delivery date
             if truck.location == package.address:
-                package.status = 'DELIVERED at '
+                package.status = f'DELIVERED @ {depart_time}'
                 del truck.packages[i]
     else:
-        # Return truck to hub once packages are exhausted
+        # Return truck to hub once package list is exhausted
         truck.destination = '4001 South 700 East'
         truck.mileage += get_distance(truck.location, truck.destination)
         truck.location = truck.destination
 
+    # Print truck's return time
+    print(f'Truck #{truck.id} returned to hub at: {depart_time}')
     return truck
+
+
+def status_report1():
+    return
+
+
+def status_report2():
+    return
+
+
+def status_report3():
+    return
 
 
 class HashTable:
