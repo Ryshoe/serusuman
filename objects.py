@@ -7,8 +7,9 @@ class Truck:
         self.id = truck_id
         self.location = location
         self.destination = destination
-        self.mileage = 0
         self.packages = packages
+        self.mileage = 0.0
+        self.speed = 18.0
 
 
 class Package:
