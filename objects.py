@@ -28,3 +28,5 @@ class Package:
         self.zip_code = zip_code
         self.weight = weight
         self.status = status
+        self.departed_at = ''
+        self.delivered_at = ''

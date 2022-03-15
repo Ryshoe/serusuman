@@ -86,6 +86,7 @@ def deliver_packages(truck, package_data, depart_time):
     for i in range(len(truck.packages)):
         key = truck.packages[i]
         package = package_data.search(key)
+        package.departed_at = depart_time
         package.status = 'EN_ROUTE'
 
     while truck.packages:
@@ -106,8 +107,10 @@ def deliver_packages(truck, package_data, depart_time):
             package = package_data.search(key)
 
             if truck.location == package.address:
-                package.status = f'DELIVERED @ {depart_time}'
+                package.delivered_at = depart_time
+                package.status = f'DELIVERED'
                 del truck.packages[i]
+
     else:
         # Return truck to hub once package list is exhausted
         truck.destination = '4001 South 700 East'
@@ -119,16 +122,23 @@ def deliver_packages(truck, package_data, depart_time):
     return truck
 
 
-def status_report1():
-    return
+def package_status(package_data, time_input):
+    # Parse input time as HH:MM
+    date_time_obj = datetime.datetime.strptime(time_input, '%H:%M')
+    time_delta_obj = datetime.timedelta(hours=date_time_obj.hour, minutes=date_time_obj.minute)
 
+    # Loop through hash table
+    for i in range(len(package_data.table)):
+        for j in range(len(package_data.table[i])):
+            key = package_data.table[i][j][0]
 
-def status_report2():
-    return
-
-
-def status_report3():
-    return
+            # Output text based on package's current status
+            if package_data.search(key).departed_at > time_delta_obj:
+                print(f'Package {package_data.search(key).id}: AT_HUB')
+            elif package_data.search(key).departed_at <= time_delta_obj < package_data.search(key).delivered_at:
+                print(f'Package {package_data.search(key).id}: EN_ROUTE')
+            else:
+                print(f'Package {package_data.search(key).id}: DELIVERED at {package_data.search(key).delivered_at}')
 
 
 class HashTable:
