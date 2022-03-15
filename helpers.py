@@ -7,7 +7,7 @@ def load_package_data():
     # Open CSV and read into hash table
     with open('data/packages.csv') as data:
         data = csv.reader(data, delimiter=',')
-        package_table = HashTable()
+        package_data = HashTable()
 
         for i in data:
             package_id = int(i[0])
@@ -17,58 +17,60 @@ def load_package_data():
             deadline = i[5]
             weight = i[6]
             package = Package(package_id, address, deadline, city, zip_code, weight)
-            package_table.insert(package_id, package)
+            package_data.insert(package_id, package)
 
-        return package_table
+        return package_data
 
 
 def load_distance_data():
     # Open CSV and read into array list
     with open('data/distances.csv') as data:
         data = csv.reader(data, delimiter=',')
-        distance_list = []
+        distance_data = []
 
         for i in data:
             row = list(i)
-            distance_list.append(row)
+            distance_data.append(row)
 
-    return distance_list
+    return distance_data
 
 
 def load_address_data():
     # Open CSV and read into array list
     with open('data/addresses.csv') as data:
         data = csv.reader(data, delimiter=',')
-        address_list = []
+        address_data = []
 
         for i in data:
-            address_list.append(i[1])
+            address_data.append(i[1])
 
-    return address_list
+    return address_data
 
 
 def get_distance(address1, address2):
     # Load CSV data
-    address_list = load_address_data()
-    distance_list = load_distance_data()
+    address_data = load_address_data()
+    distance_data = load_distance_data()
 
     # Assign indices from address list
-    address1_index = address_list.index(address1)
-    address2_index = address_list.index(address2)
+    address1_index = address_data.index(address1)
+    address2_index = address_data.index(address2)
 
     # Return value from distance list
-    distance = distance_list[address1_index][address2_index]
+    distance = distance_data[address1_index][address2_index]
 
     return float(distance)
 
 
-def min_distance(curr_address, truck_packages, package_list):
-    # Declare variable to hold the shortest distance
+def min_distance(curr_address, truck_packages):
+    # Declare variables to hold the shortest distance and closest address
     shortest_distance = -1.0
+    closest_address = ""
 
     # Iterate through packages on truck and compare distances from truck's current location
+    package_data = load_package_data()
     for i in range(len(truck_packages)):
-        package_address = package_list.search(truck_packages[i]).address
+        package_address = package_data.search(truck_packages[i]).address
         distance = get_distance(curr_address, package_address)
 
         if distance < shortest_distance or shortest_distance == -1.0:
@@ -78,9 +80,36 @@ def min_distance(curr_address, truck_packages, package_list):
     return closest_address
 
 
-def load_truck_packages():
-    # TODO write some function to load packages onto trucks
-    return
+def deliver_packages(truck, package_data):
+    # Update all packages to 'EN_ROUTE'
+    for i in range(len(truck.packages)):
+        key = truck.packages[i]
+        package = package_data.search(key)
+        package.status = 'EN_ROUTE'
+
+    while truck.packages:
+        # TODO: keep track of time between each stop
+        # Get the closest address from packages, drive truck to destination, and update mileage
+        truck.destination = min_distance(truck.location, truck.packages)
+        truck.mileage += get_distance(truck.location, truck.destination)
+        truck.location = truck.destination
+
+        # Deliver packages that belong to current address
+        for i in range(len(truck.packages) - 1, -1, -1):
+            key = truck.packages[i]
+            package = package_data.search(key)
+
+            # TODO: add timestamp to delivery date
+            if truck.location == package.address:
+                package.status = 'DELIVERED at '
+                del truck.packages[i]
+    else:
+        # Return truck to hub once packages are exhausted
+        truck.destination = '4001 South 700 East'
+        truck.mileage += get_distance(truck.location, truck.destination)
+        truck.location = truck.destination
+
+    return truck
 
 
 class HashTable:
