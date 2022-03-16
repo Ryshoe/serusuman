@@ -199,7 +199,3 @@ class HashTable:
         for kv in bucket_list:
             if kv[0] == key:
                 bucket_list.remove([kv[0], kv[1]])
-
-    def bucket(self, key):
-        bucket = hash(key) % len(self.table)
-        return bucket
