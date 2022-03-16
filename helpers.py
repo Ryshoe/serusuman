@@ -128,7 +128,7 @@ def package_status_by_id(package_data, id_input):
         for j in range(len(package_data.table[i])):
             key = package_data.table[i][j][0]
 
-            # Output package details if input matches
+            # Output package details if package id matches
             if package_data.search(key).id == id_input:
                 print(f'Package ID: {package_data.search(key).id}'
                       f'\nDelivery address: {package_data.search(key).address}'
