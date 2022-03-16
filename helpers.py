@@ -122,7 +122,28 @@ def deliver_packages(truck, package_data, depart_time):
     return truck
 
 
-def package_status(package_data, time_input):
+def package_status_by_id(package_data, id_input):
+    # Loop through hash table
+    for i in range(len(package_data.table)):
+        for j in range(len(package_data.table[i])):
+            key = package_data.table[i][j][0]
+
+            # Output package details if input matches
+            if package_data.search(key).id == id_input:
+                print(f'Package ID: {package_data.search(key).id}'
+                      f'\nDelivery address: {package_data.search(key).address}'
+                      f'\nDelivery deadline: {package_data.search(key).deadline}'
+                      f'\nDelivery city: {package_data.search(key).city}'
+                      f'\nDelivery zip code: {package_data.search(key).zip_code}'
+                      f'\nPackage weight: {package_data.search(key).weight} kg')
+                if package_data.search(key).status == 'DELIVERED':
+                    print(f'Delivery status: {package_data.search(key).status}'
+                          f' at {package_data.search(key).delivered_at}')
+                else:
+                    print(f'Delivery status: {package_data.search(key).status}')
+
+
+def package_status_all(package_data, time_input):
     # Parse input time as HH:MM
     date_time_obj = datetime.datetime.strptime(time_input, '%H:%M')
     time_delta_obj = datetime.timedelta(hours=date_time_obj.hour, minutes=date_time_obj.minute)

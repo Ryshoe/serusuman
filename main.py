@@ -34,7 +34,8 @@ def main():
     #               f'\n{package_data.search(key).status} '
     #               f'at {package_data.search(key).delivered_at}')
 
-    helpers.package_status(package_data, '8:00')
+    # helpers.package_status_by_id(package_data, 15)
+    # helpers.package_status_all(package_data, '8:00')
 
 
 if __name__ == "__main__":
