@@ -5,11 +5,12 @@ from objects import Package
 
 
 def load_package_data():
-    # Open CSV and read into hash table
+    # Reads CSV data and creates hash table
     with open('data/packages.csv') as data:
         data = csv.reader(data, delimiter=',')
         package_data = HashTable()
 
+        # Loop through each line, create package object using data, then insert into hash table
         for i in data:
             package_id = int(i[0])
             address = i[1]
@@ -24,11 +25,12 @@ def load_package_data():
 
 
 def load_distance_data():
-    # Open CSV and read into array list
+    # Reads CSV data and creates array list
     with open('data/distances.csv') as data:
         data = csv.reader(data, delimiter=',')
         distance_data = []
 
+        # Loop through each line, create a single list item, then append each item to the array
         for i in data:
             row = list(i)
             distance_data.append(row)
@@ -37,11 +39,12 @@ def load_distance_data():
 
 
 def load_address_data():
-    # Open CSV and read into array list
+    # Reads CSV data and creates array list
     with open('data/addresses.csv') as data:
         data = csv.reader(data, delimiter=',')
         address_data = []
 
+        # Loop through each line then append to array
         for i in data:
             address_data.append(i[1])
 
@@ -53,11 +56,11 @@ def get_distance(address1, address2):
     address_data = load_address_data()
     distance_data = load_distance_data()
 
-    # Assign indices from address list
+    # Assign indices from address data
     address1_index = address_data.index(address1)
     address2_index = address_data.index(address2)
 
-    # Return value from distance list
+    # Return value from distance data as float
     distance = distance_data[address1_index][address2_index]
 
     return float(distance)
@@ -89,6 +92,7 @@ def deliver_packages(truck, package_data, depart_time):
         package.departed_at = depart_time
         package.status = 'EN_ROUTE'
 
+    # Loop through package list until empty
     while truck.packages:
         # Get the closest address from packages
         truck.destination = min_distance(truck.location, truck.packages)
@@ -101,7 +105,7 @@ def deliver_packages(truck, package_data, depart_time):
         # Drive truck to destination
         truck.location = truck.destination
 
-        # Deliver packages that belong to current address
+        # Deliver packages that belong to current address, updating package status and removing from truck
         for i in range(len(truck.packages) - 1, -1, -1):
             key = truck.packages[i]
             package = package_data.search(key)
@@ -112,18 +116,16 @@ def deliver_packages(truck, package_data, depart_time):
                 del truck.packages[i]
 
     else:
-        # Return truck to hub once package list is exhausted
+        # Return truck to hub
         truck.destination = '4001 South 700 East'
         truck.mileage += get_distance(truck.location, truck.destination)
         truck.location = truck.destination
 
-    # Print truck's return time
-    print(f'Truck #{truck.id} returned to hub at: {depart_time}')
     return truck
 
 
 def package_status_by_id(package_data, id_input):
-    # Loop through hash table
+    # Loop through package hash table
     for i in range(len(package_data.table)):
         for j in range(len(package_data.table[i])):
             key = package_data.table[i][j][0]
@@ -148,7 +150,7 @@ def package_status_all(package_data, time_input):
     date_time_obj = datetime.datetime.strptime(time_input, '%H:%M')
     time_delta_obj = datetime.timedelta(hours=date_time_obj.hour, minutes=date_time_obj.minute)
 
-    # Loop through hash table
+    # Loop through package hash table
     for i in range(len(package_data.table)):
         for j in range(len(package_data.table[i])):
             key = package_data.table[i][j][0]

@@ -23,17 +23,6 @@ def main():
 
     # total_mileage = truck1.mileage + truck2.mileage + truck3.mileage
     # print(f'Total mileage: {total_mileage}')
-
-    # print(package_data.table)
-    # for i in range(len(package_data.table)):
-    #     for j in range(len(package_data.table[i])):
-    #         key = package_data.table[i][j][0]
-    #         print(f'Package ID: {package_data.search(key).id} '
-    #               f'\t|\tDeadline: {package_data.search(key).deadline} '
-    #               f'\nDEPARTED at {package_data.search(key).departed_at}'
-    #               f'\n{package_data.search(key).status} '
-    #               f'at {package_data.search(key).delivered_at}')
-
     # helpers.package_status_by_id(package_data, 15)
     # helpers.package_status_all(package_data, '8:00')
 
